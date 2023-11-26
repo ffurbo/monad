@@ -24,7 +24,7 @@ class Main
 
         $parse_int = fn(string $value): Maybe => new Maybe(is_numeric($value) ? (int) $value : null);
 
-        $is_positive = fn(int $value): Maybe => new Maybe($value > 0 ? $value : null);
+        $is_positive = fn(?int $value): Maybe => new Maybe((int) $value > 0 ? $value : null);
 
 
 
@@ -38,7 +38,7 @@ class Main
         $validate_and_process = fn(string $inputStr): Maybe => (new Maybe($inputStr))
             ->bind($parse_int)
             ->bind($is_positive)
-            ->bind(fn(int $n): Maybe => new Maybe($multiply_by_two($n)));
+            ->bind(fn(?int $n): Maybe => new Maybe($multiply_by_two((int) $n)));
 
         // $f = new Functor(5);
         // var_dump($f->map($add_one)->map($multiply_by_two)->getValue());
@@ -72,13 +72,14 @@ class Main
         foreach ($inputs as $inputStr) {
             printf("processing %s \n", $inputStr);
             $result = $validate_and_process($inputStr);
-            if ($result->testValue(new Maybe(null))) {
-                printf("invalid input %s \n", $inputStr);
-            } elseif (is_numeric($result->getValue())) {
-                printf("result %s \n", $result->getValue());
-            } else {
-                printf("unexpected input %s \n", $result->getValue());
-            }
+
+            $msg = match (true) {
+                $result->getValue() === null => sprintf("invalid input %s \n", $inputStr),
+                is_numeric($result->getValue()) => printf("result %s \n", $result->getValue()),
+                default => sprintf("unexpected input %s \n", $result->getValue()),
+            };
+
+            echo $msg;
         }
     }
 }

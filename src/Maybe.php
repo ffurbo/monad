@@ -54,15 +54,4 @@ class Maybe
         return $this->value;
     }
 
-    /**
-     * Undocumented function
-     * @template U
-     *
-     * @param Maybe<U> $other
-     * @return boolean
-     */
-    public function testValue(Maybe $other): bool
-    {
-        return $this->getValue() === $other->getValue();
-    }
 }
