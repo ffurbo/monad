@@ -10,42 +10,38 @@ use Closure;
 class Maybe
 {
     /**
-     * Undocumented variable
+     * monad value
      *
      * @var T
      */
     private mixed $value;
 
     /**
-     * Undocumented function
+     * constructor
      *
      * @param T $value
      */
     final public function __construct(mixed $value = null)
     {
         $this->value = $value;
-        // if ($this->value === null) {
-        //     unset($this->value);
-        // }
     }
 
     /**
-     * Undocumented function
+     * bind function
+     * 
      * @template U
      *
      * @param \Closure(T): Maybe<U> $func
+     * 
      * @return Maybe<T>|Maybe<U>
      */
     public function bind(Closure $func): Maybe
     {
-        // if ($this->value === null) {
-        //     return $this;
-        // }
         return $this->value === null ? $this : $func($this->value);
     }
 
     /**
-     * Undocumented function
+     * get monad value
      *
      * @return T
      */

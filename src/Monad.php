@@ -47,15 +47,4 @@ class Monad
     {
         return $this->value;
     }
-
-    /**
-     * Undocumented function
-     *
-     * @param T $value
-     * @return static
-     */
-    public static function unit(mixed $value): static
-    {
-        return new static($value);
-    }
 }
